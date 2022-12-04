@@ -42,11 +42,11 @@ function makeBoard(width, height) {
 
   let table = makeArrOf([],height);
 
-  console.log(table);
+  // console.log(table);
 
   let result = table.map(() => makeArrOf(null, width));
 
-  console.log(result);
+  // console.log(result);
 
   return result
 
@@ -103,30 +103,18 @@ function makeHtmlBoard() {
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
 
-  console.log(x);
+  // console.log(x);
 
   let result =
   board.findIndex((val) => {
-    console.log(val);
-    console.log(val[x]);
+    // console.log(val);
+    // console.log(val[x]);
 
     return val[x] !== null;
 
   })
 
-  console.log(result);
-
-  // REFACTORED TO ONE LINE BELOW
-
-  // if (result === -1) {
-  //   console.log(result);
-  //   return HEIGHT-1;
-  // }
-  // else {
-  //   return result-1;
-  // }
-
-  // REFACTORED TO ONE LINE BELOW
+  // console.log(result);
 
   return result === -1 ? HEIGHT-1 : result-1;
 }
@@ -136,8 +124,8 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
 
-  console.log(y)
-  console.log(x);
+  // console.log(y)
+  // console.log(x);
 
   const position = document.getElementById(`${y}-${x}`)
   
@@ -176,70 +164,87 @@ function handleClick(evt) {
     return;
   }
 
+  console.log(y);
+
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
   board[y][x] = currPlayer;
-  console.log(board);
+  // console.log(board);
 
   // check for win
   if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
-  }
-  else{
-    console.log(checkForWin);
+    return endGame(`Player ${currPlayer} Won!`);
   }
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkForTie()){
-    console.log('Game End Tie');
+    // console.log('Game End Tie');
     endGame('Game End Tie');
-  }
-  else{
-    console.log('Take Another Turn')
   }
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
   // Maybe move function definition outside of this later
-  function switchPlayer() {
-    return currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
-  };
   switchPlayer();
-  console.log(currPlayer);
+  // console.log(currPlayer);
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
 function checkForWin() {
+
   function _win(cells) {
+    // Accepts a test array of coordinate arrays.
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
     //  - returns true if all are legal coordinates & all match currPlayer
 
+    //ORIGINAL CODE
     return cells.every(
       ([y, x]) =>
-        y >= 0 &&
-        y < HEIGHT &&
-        x >= 0 &&
-        x < WIDTH &&
+        // y >= 0 && // prevents returning true if test coordinates run off the board - THIS LINE IS NOT NEEDED AS EVERY TEST ARRAY ONLY OVERRUNS IN THE POSITIVE DIRECTION
+        y < HEIGHT && // prevents returning true if test coordinates run off the board
+        // x >= 0 && // prevents returning true if test coordinates run off the board - THIS LINE IS NOT NEEDED AS EVERY TEST ARRAY ONLY OVERRUNS IN THE POSITIVE DIRECTION
+        x < WIDTH && // prevents returning true if test coordinates run off the board
         board[y][x] === currPlayer
     );
+    //ORIGINAL CODE
+
+    // console.log(cells);
+
+    // let result = cells.every(
+    // ([y, x]) =>
+    //   y >= 0 &&
+    //   y < HEIGHT &&
+    //   x >= 0 &&
+    //   x < WIDTH &&
+    //   board[y][x] === currPlayer
+    // );
+    // // console.log(result);
+    // return result;
   }
 
   // TODO: read and understand this code. Add comments to help you.
 
-  for (let y = 0; y < HEIGHT; y++) {
-    for (let x = 0; x < WIDTH; x++) {
-      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-      let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-      let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+  // These nested loops generate every possible of cell coordinate combination that could yield a win.
 
-      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+  // Note, some of the combinations generated are larger than the board. This is why the _win function narrows the scope by requiring x and y to be between 0 and HEIGHT and WIDTH respectively.
+
+  for (let y = 0; y < HEIGHT; y++) { // this loop iterates the y coordinate of every origin cell
+    // console.log(y);
+    for (let x = 0; x < WIDTH; x++) { // this loop iterates the x coordinate of every origin cell
+      // console.log(x);
+      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell to the right], and so on for 3rd and 4th positions...]
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell below], and so on for 3rd and 4th positions...]
+      let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell diagonal down and right], and so on for 3rd and 4th positions...] NOTE - The upward diagonal is covered by another coordinate's downward diagonal which is why it is not included.
+      let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell diagonal down and left], and so on for 3rd and 4th positions...] NOTE - The upward diagonal is covered by another coordinate's downward diagonal which is why it is not included.
+
+      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) { //This is where _win is run to check if any of every of arrays of test coordinates return true 
         return true;
       }
+      else {console.log('false - no win yet')}
     }
   }
 }
@@ -248,20 +253,18 @@ function checkForTie(){
 
   const result = 
   board.every((arr) => {
-    console.log(arr)
+    // console.log(arr)
     return !arr.includes(null);
   });
 
-  console.log(result);
+  // console.log(result);
   return result;
 
 }
 
+function switchPlayer() {
+  return currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
+};
+
 board = makeBoard(WIDTH, HEIGHT); // I ADDED THIS SO THAT BOARD WOULD BE SAVED
 makeHtmlBoard();
-
-// testing placeInTable
-
-// placeInTable(0,1)
-
-// testing placeInTable
