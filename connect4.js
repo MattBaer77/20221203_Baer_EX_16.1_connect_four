@@ -158,6 +158,9 @@ function handleClick(evt) {
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
+  else{
+    console.log(checkForWin);
+  }
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
@@ -232,7 +235,16 @@ function checkForWin() {
 //REVISE THIS TO CHECK MEMORY FOR TIE
 
 function checkForTie(){
-  
+
+  const result = 
+  board.every((arr) => {
+    console.log(arr)
+    return !arr.includes(null);
+  });
+
+  console.log(result);
+  return result;
+
 }
 
 board = makeBoard(WIDTH, HEIGHT); // I ADDED THIS SO THAT BOARD WOULD BE SAVED
