@@ -22,12 +22,6 @@ function makeBoard(width, height) {
   // Each ARRAY Should have WIDTH number of values.
   // The values should start as null
 
-  console.log(height);
-  console.log(width);
-
-  // makeArrOf might be useful elswhere - depending on next steps maybe make its own function
-  // makeArrOf accepts a value and a length and makes an array repeating that value of that length
-
   function makeArrOf(val,length){
     let newArr = []
     for(
@@ -42,11 +36,7 @@ function makeBoard(width, height) {
 
   let table = makeArrOf([],height);
 
-  // console.log(table);
-
   let result = table.map(() => makeArrOf(null, width));
-
-  // console.log(result);
 
   return result
 
@@ -64,9 +54,9 @@ function makeHtmlBoard() {
 
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
 
-  // MATT added - in response to 'Step Four'
+  // added - in response to 'Step Four'
   const htmlBoard = document.querySelector('#board'); // Originally selected #game - CSS didnt apply for that reason.
-  // MATT added - in response to 'Step Four'
+  // added - in response to 'Step Four'
 
   // TODO: add comment for this code
   let top = document.createElement("tr"); // this line creates a table row
@@ -103,18 +93,12 @@ function makeHtmlBoard() {
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
 
-  // console.log(x);
-
   let result =
   board.findIndex((val) => {
-    // console.log(val);
-    // console.log(val[x]);
 
     return val[x] !== null;
 
   })
-
-  // console.log(result);
 
   return result === -1 ? HEIGHT-1 : result-1;
 }
@@ -124,16 +108,12 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
 
-  // console.log(y)
-  // console.log(x);
-
   const position = document.getElementById(`${y}-${x}`)
   
   function makeDiv(){
     let newDiv =
     document.createElement('div');
     newDiv.setAttribute('class', `piece ${currPlayer}`);
-    // newDiv.innerText = 'yo'; // Checking that it exists
     return newDiv
   }
 
@@ -156,21 +136,16 @@ function handleClick(evt) {
   // get x from ID of clicked cell
   let x = +evt.target.id;
 
-  console.log(x);
-
   // get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
 
-  console.log(y);
-
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
   board[y][x] = currPlayer;
-  // console.log(board);
 
   // check for win
   if (checkForWin()) {
@@ -180,15 +155,12 @@ function handleClick(evt) {
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkForTie()){
-    // console.log('Game End Tie');
     endGame('Game End Tie');
   }
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
-  // Maybe move function definition outside of this later
   switchPlayer();
-  // console.log(currPlayer);
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -201,7 +173,6 @@ function checkForWin() {
     //  - cells: list of four (y, x) cells
     //  - returns true if all are legal coordinates & all match currPlayer
 
-    //ORIGINAL CODE
     return cells.every(
       ([y, x]) =>
         // y >= 0 && // prevents returning true if test coordinates run off the board - THIS LINE IS NOT NEEDED AS EVERY TEST ARRAY ONLY OVERRUNS IN THE POSITIVE DIRECTION
@@ -210,20 +181,6 @@ function checkForWin() {
         x < WIDTH && // prevents returning true if test coordinates run off the board
         board[y][x] === currPlayer
     );
-    //ORIGINAL CODE
-
-    // console.log(cells);
-
-    // let result = cells.every(
-    // ([y, x]) =>
-    //   y >= 0 &&
-    //   y < HEIGHT &&
-    //   x >= 0 &&
-    //   x < WIDTH &&
-    //   board[y][x] === currPlayer
-    // );
-    // // console.log(result);
-    // return result;
   }
 
   // TODO: read and understand this code. Add comments to help you.
@@ -232,10 +189,8 @@ function checkForWin() {
 
   // Note, some of the combinations generated are larger than the board. This is why the _win function narrows the scope by requiring x and y to be between 0 and HEIGHT and WIDTH respectively.
 
-  for (let y = 0; y < HEIGHT; y++) { // this loop iterates the y coordinate of every origin cell
-    // console.log(y);
-    for (let x = 0; x < WIDTH; x++) { // this loop iterates the x coordinate of every origin cell
-      // console.log(x);
+  for (let y = 0; y < HEIGHT; y++) { // this loop iterates the y coordinate of every origin cell for test arrays
+    for (let x = 0; x < WIDTH; x++) { // this loop iterates the x coordinate of every origin cell for test arrays
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell to the right], and so on for 3rd and 4th positions...]
       let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell below], and so on for 3rd and 4th positions...]
       let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]]; // this creates an array of test coordinates consisting of [[coordinates of origin cell], [coordinates of next cell diagonal down and right], and so on for 3rd and 4th positions...] NOTE - The upward diagonal is covered by another coordinate's downward diagonal which is why it is not included.
@@ -244,7 +199,6 @@ function checkForWin() {
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) { //This is where _win is run to check if any of every of arrays of test coordinates return true 
         return true;
       }
-      else {console.log('false - no win yet')}
     }
   }
 }
@@ -253,11 +207,9 @@ function checkForTie(){
 
   const result = 
   board.every((arr) => {
-    // console.log(arr)
     return !arr.includes(null);
   });
 
-  // console.log(result);
   return result;
 
 }
