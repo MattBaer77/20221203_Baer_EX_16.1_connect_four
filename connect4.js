@@ -103,7 +103,32 @@ function makeHtmlBoard() {
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
 
-  return 5;
+  console.log(x);
+
+  let result =
+  board.findIndex((val) => {
+    console.log(val);
+    console.log(val[x]);
+
+    return val[x] !== null;
+
+  })
+
+  console.log(result);
+
+  // REFACTORED TO ONE LINE BELOW
+
+  // if (result === -1) {
+  //   console.log(result);
+  //   return HEIGHT-1;
+  // }
+  // else {
+  //   return result-1;
+  // }
+
+  // REFACTORED TO ONE LINE BELOW
+
+  return result === -1 ? HEIGHT-1 : result-1;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -134,6 +159,7 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   // TODO: pop up alert message
+  alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -141,6 +167,8 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   let x = +evt.target.id;
+
+  console.log(x);
 
   // get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
@@ -166,14 +194,15 @@ function handleClick(evt) {
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkForTie()){
     console.log('Game End Tie');
+    endGame('Game End Tie');
   }
   else{
     console.log('Take Another Turn')
   }
 
-
   // switch players
   // TODO: switch currPlayer 1 <-> 2
+  // Maybe move function definition outside of this later
   function switchPlayer() {
     return currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
   };
@@ -214,25 +243,6 @@ function checkForWin() {
     }
   }
 }
-
-//REVISE THIS TO CHECK MEMORY FOR TIE
-
-// function checkForTie() {
-//   allTds = document.querySelectorAll('td');
-//   // console.log(allTds);
-//   allTdArray = Array.from(allTds);
-//   // console.log(allTdArray);
-//   allTdArray = allTdArray.slice(WIDTH);
-//   // console.log(allTdArray);
-//   return allTdArray.every((td) => {
-//     console.log(td.innerHTML);
-
-//     return td.innerHTML === '';
-
-//   });
-// }
-
-//REVISE THIS TO CHECK MEMORY FOR TIE
 
 function checkForTie(){
 
