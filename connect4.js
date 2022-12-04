@@ -25,11 +25,14 @@ function makeBoard(width, height) {
   console.log(height);
   console.log(width);
 
-  function makeArrOf(val,index){
+  // makeArrOf might be useful elswhere - depending on next steps maybe make its own function
+  // makeArrOf accepts a value and a length and makes an array repeating that value of that length
+
+  function makeArrOf(val,length){
     let newArr = []
     for(
       i = 0;
-      i < index;
+      i < length;
       i++
     ) {
       newArr.push(val);
@@ -41,42 +44,57 @@ function makeBoard(width, height) {
 
   console.log(table);
 
-  const filledTable =
+  let result = table.map(() => makeArrOf(null, width));
 
-  table.map(() => {
-    return makeArrOf(null, width);
-  });
+  console.log(result);
 
-  console.log(filledTable);
+  return result
 
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
+
+  // NOTE TO SELF - THIS FUNCTION IS NOT MODULAR IN THAT IT IS NOT ACCEPTING ANY INPUTS AND ASSUMES THAT VARIABLES
+  // HEIGHT
+  // WIDTH
+  // EXIST IN THE CODE PRIOR TO ITS INITIALIZATION
+  // IF THIS NEEDS TO BE MOVED / REUSED - ADD height, width INPUTS
+
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
 
+  // MATT added - in response to 'Step Four'
+  const htmlBoard = document.querySelector('#board'); // Originally selected #game - CSS didnt apply for that reason.
+  // MATT added - in response to 'Step Four'
+
   // TODO: add comment for this code
-  let top = document.createElement("tr");
-  top.setAttribute("id", "column-top");
-  top.addEventListener("click", handleClick);
+  let top = document.createElement("tr"); // this line creates a table row
+  top.setAttribute("id", "column-top"); // this line adds an id attribute of 'column-top'
+  top.addEventListener("click", handleClick); // this line adds a click event handler to the top row
+
+  // THIS LOOP creates and adds each of the created TDs to the top row
 
   for (let x = 0; x < WIDTH; x++) {
-    let headCell = document.createElement("td");
-    headCell.setAttribute("id", x);
-    top.append(headCell);
+    let headCell = document.createElement("td");  // creates TD
+    headCell.setAttribute("id", x); // Adds the TD's ID set to the index of the loop
+    top.append(headCell); // Adds the TD to the top row
   }
-  htmlBoard.append(top);
+  htmlBoard.append(top); // Adds the top row to the top of the table
 
   // TODO: add comment for this code
+
+  // This loop creates TRs and adds each TR to the table. The number of TRs is contingent on the value of HEIGHT variable
+
   for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
+    // This loop adds TDs to each TR. The number of TDs is contingent upon the WIDTH variable.
     for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement("td");
-      cell.setAttribute("id", `${y}-${x}`);
-      row.append(cell);
+      cell.setAttribute("id", `${y}-${x}`); // This line names each TD with an ID coorisponding to its row number Y and column number X
+      row.append(cell); // This line appends each TD to the TR
     }
-    htmlBoard.append(row);
+    htmlBoard.append(row); // This line appends each row to the table
   }
 }
 
@@ -84,13 +102,32 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
-  return 0;
+
+  return 5;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+
+  console.log(y)
+  console.log(x);
+
+  const position = document.getElementById(`${y}-${x}`)
+  
+  function makeDiv(){
+    let newDiv =
+    document.createElement('div');
+    newDiv.setAttribute('class', `piece ${currPlayer}`);
+    // newDiv.innerText = 'yo'; // Checking that it exists
+    return newDiv
+  }
+
+  divtoAdd = makeDiv();
+
+  position.append(divtoAdd);
+
 }
 
 /** endGame: announce game end */
@@ -114,6 +151,8 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+  board[y][x] = currPlayer;
+  console.log(board);
 
   // check for win
   if (checkForWin()) {
@@ -122,9 +161,21 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  if (checkForTie()){
+    console.log('Game End Tie');
+  }
+  else{
+    console.log('Take Another Turn')
+  }
+
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
+  function switchPlayer() {
+    return currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
+  };
+  switchPlayer();
+  console.log(currPlayer);
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -161,5 +212,34 @@ function checkForWin() {
   }
 }
 
-makeBoard(WIDTH, HEIGHT);
+//REVISE THIS TO CHECK MEMORY FOR TIE
+
+// function checkForTie() {
+//   allTds = document.querySelectorAll('td');
+//   // console.log(allTds);
+//   allTdArray = Array.from(allTds);
+//   // console.log(allTdArray);
+//   allTdArray = allTdArray.slice(WIDTH);
+//   // console.log(allTdArray);
+//   return allTdArray.every((td) => {
+//     console.log(td.innerHTML);
+
+//     return td.innerHTML === '';
+
+//   });
+// }
+
+//REVISE THIS TO CHECK MEMORY FOR TIE
+
+function checkForTie(){
+  
+}
+
+board = makeBoard(WIDTH, HEIGHT); // I ADDED THIS SO THAT BOARD WOULD BE SAVED
 makeHtmlBoard();
+
+// testing placeInTable
+
+// placeInTable(0,1)
+
+// testing placeInTable
