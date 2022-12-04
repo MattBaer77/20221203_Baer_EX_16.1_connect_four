@@ -15,15 +15,15 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 
-function makeBoard() {
+function makeBoard(width, height) {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
 
   // Make a board that is an array of arrays with HEIGHT number of ARRAYS
   // Each ARRAY Should have WIDTH number of values.
   // The values should start as null
 
-  console.log(HEIGHT);
-  console.log(WIDTH);
+  console.log(height);
+  console.log(width);
 
   // OPTION 1 - Make boards full of rows.
 
@@ -45,10 +45,10 @@ function makeBoard() {
 
   // for(
   //   j = 0;
-  //   j < HEIGHT;
+  //   j < height;
   //   j++
   // ) {
-  //   newBoard.push(makeRow(WIDTH))
+  //   newBoard.push(makeRow(width))
   //   console.log('push');
   // };
 
@@ -59,6 +59,30 @@ function makeBoard() {
   // OPTION 1 - Make boards full of rows.
 
   // OPTION 2 - Generic makeArrOf - Reused to make row then a table of rows.
+
+  // function makeArrOf(val,index){
+  //   let newArr = []
+  //   for(
+  //     i = 0;
+  //     i < index;
+  //     i++
+  //   ) {
+  //     newArr.push(val);
+  //   }
+  //   return newArr;
+  // }
+
+  // row = makeArrOf(null,width);
+
+  // console.log(row);
+
+  // table = makeArrOf(row,height);
+
+  // console.log(table);
+
+  // return table;
+
+  // OPTION 3 - O2 USED DIFFERENTLY
 
   function makeArrOf(val,index){
     let newArr = []
@@ -72,15 +96,17 @@ function makeBoard() {
     return newArr;
   }
 
-  row = makeArrOf(null,WIDTH);
-
-  console.log(row);
-
-  table = makeArrOf(row,HEIGHT);
+  let table = makeArrOf([],height);
 
   console.log(table);
 
-  return table;
+  const filledTable =
+
+  table.map(() => {
+    return makeArrOf(null, width);
+  });
+
+  console.log(filledTable);
 
 }
 
@@ -194,5 +220,5 @@ function checkForWin() {
   }
 }
 
-makeBoard();
+makeBoard(WIDTH, HEIGHT);
 makeHtmlBoard();
