@@ -25,65 +25,6 @@ function makeBoard(width, height) {
   console.log(height);
   console.log(width);
 
-  // OPTION 1 - Make boards full of rows.
-
-  // function makeRow(num){
-
-  //   let row = [];
-  //   for (
-  //     i = 0;
-  //     i < num;
-  //     i++
-  //   ) {
-  //     row.push(null);
-  //   }
-  //   console.log(row);
-  //   return row
-  // };
-
-  // const newBoard = []
-
-  // for(
-  //   j = 0;
-  //   j < height;
-  //   j++
-  // ) {
-  //   newBoard.push(makeRow(width))
-  //   console.log('push');
-  // };
-
-  // console.log(newBoard);
-
-  // return newBoar
-  
-  // OPTION 1 - Make boards full of rows.
-
-  // OPTION 2 - Generic makeArrOf - Reused to make row then a table of rows.
-
-  // function makeArrOf(val,index){
-  //   let newArr = []
-  //   for(
-  //     i = 0;
-  //     i < index;
-  //     i++
-  //   ) {
-  //     newArr.push(val);
-  //   }
-  //   return newArr;
-  // }
-
-  // row = makeArrOf(null,width);
-
-  // console.log(row);
-
-  // table = makeArrOf(row,height);
-
-  // console.log(table);
-
-  // return table;
-
-  // OPTION 3 - O2 USED DIFFERENTLY
-
   function makeArrOf(val,index){
     let newArr = []
     for(
