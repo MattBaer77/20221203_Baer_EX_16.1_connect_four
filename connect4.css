@@ -12,6 +12,7 @@
 
 .piece {
   /* TODO: make into circles */
+  position: absolute; /* somehow this is supposed to help animate the pieces*/
   margin: 5px;
   width: 80%;
   height: 80%;
