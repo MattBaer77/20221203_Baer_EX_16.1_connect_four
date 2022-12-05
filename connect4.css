@@ -1,25 +1,48 @@
 /* game board table */
 
+/* window {
+  min-width: 1000px;
+  
+} */
 
+body {
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+}
 
 #board td {
-  width: 50px;
-  height: 50px;
-  border: solid 1px #666;
   position: relative;
+  min-width: 60px;
+  height: 60px;
+  border: solid 1px #666;
+  padding: 0px;
 }
 
 /* pieces are div within game table cells: draw as colored circles */
 
+@keyframes append-animate {
+  from {
+    transform: translateY(-5000%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
 .piece {
   /* TODO: make into circles */
   position: absolute; /* somehow this is supposed to help animate the pieces*/
-  margin: 1px;
+  margin: 5px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   top: 0px ;
   left: 0px ;
+  animation: append-animate .3s ease-in-out;
 
   /* This makes circles */
 }
